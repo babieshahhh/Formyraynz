@@ -145,8 +145,50 @@
   }
 
   function goToMain() {
+
+  const unlockDate = new Date("Feb 14, 2026 00:00:00").getTime();
+  const now = new Date().getTime();
+
+  // If it's already Feb 14 → go straight to main site
+  if (now >= unlockDate) {
     window.location.href = "PASTE_YOUR_MAIN_SITE_LINK_HERE";
+    return;
   }
+
+  // Otherwise show fake denial screen
+  document.getElementById("popup-text").innerHTML = `
+    <b style="font-size:1.3rem;">ACCESS DENIED 🚫</b><br><br>
+    you really thought it would open already? 💀<br>
+    patience, darling 😌<br><br>
+
+    <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="200" style="border-radius:12px;"><br><br>
+
+    unlocking in:<br>
+    <span id="countdown" style="font-size:1.2rem;font-weight:bold;"></span>
+  `;
+
+  document.getElementById("popup").style.display = "flex";
+
+  // Countdown timer
+  const timer = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = unlockDate - now;
+
+    if (distance <= 0) {
+      clearInterval(timer);
+      window.location.href = "PASTE_YOUR_MAIN_SITE_LINK_HERE";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    document.getElementById("countdown").innerText =
+      days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+  }, 1000);
+}
 </script>
 
 </body>
